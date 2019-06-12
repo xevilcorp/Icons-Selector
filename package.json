@@ -10,14 +10,25 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onCommand:fonts-selector.sayHi",
+		"onCommand:fonts-selector.sayBye",
+		"onCommand:fonts-selector.start"
+
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
+				"command": "fonts-selector.sayHi",
+				"title": "Say Hi!"
+			},
+			{
+				"command": "fonts-selector.sayBye",
+				"title": "Say Bye!"
+			},
+			{
+				"command": "fonts-selector.start",
+				"title": "Go cat!"
 			}
 		]
 	},
@@ -34,5 +45,6 @@
 		"tslint": "^5.12.1",
 		"@types/node": "^10.12.21",
 		"@types/mocha": "^2.2.42"
-	}
+	},
+	"dependencies": {}
 }

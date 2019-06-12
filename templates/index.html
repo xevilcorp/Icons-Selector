@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--vscode-breadcrumb-background);
+            z-index: 99999;
+            display: flex;
+        }
+
+        main {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(11, auto);
+            margin-top: 50px;
+        }
+
+        @media (max-width:1460px) {
+            main {
+                grid-template-columns: repeat(11, auto);
+            }
+        }
+
+        @media (max-width:1300px) {
+            main {
+                grid-template-columns: repeat(10, auto);
+            }
+        }
+
+        @media (max-width:1160px) {
+            main {
+                grid-template-columns: repeat(9, auto);
+            }
+        }
+
+        @media (max-width:1040px) {
+            main {
+                grid-template-columns: repeat(8, auto);
+            }
+        }
+
+        @media (max-width:920px) {
+            main {
+                grid-template-columns: repeat(7, auto);
+            }
+        }
+
+        @media (max-width:800px) {
+            main {
+                grid-template-columns: repeat(6, auto);
+            }
+        }
+
+        @media (max-width:690px) {
+            main {
+                grid-template-columns: repeat(5, auto);
+            }
+        }
+
+        @media (max-width:560px) {
+            main {
+                grid-template-columns: repeat(4, auto);
+            }
+        }
+
+        @media (max-width:430px) {
+            main {
+                grid-template-columns: repeat(3, auto);
+                grid-column-gap: 5px;
+            }
+        }
+
+        @media (max-width:320px) {
+            main {
+                grid-template-columns: repeat(2, auto);
+                grid-column-gap: 5px;
+            }
+        }
+
+        @media (max-width:240px) {
+            main {
+                grid-template-columns: repeat(1, auto);
+            }
+        }
+
+        article {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 5px;
+            display: inline-block;
+            color: var(--vscode-foreground);
+            padding: 5px;
+            font-size: var(--vscode-font-size);
+            font-weight: var(--vscode-font-weight);
+            text-align: center;
+        }
+
+        body.vscode-light article {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.vscode-high-contrast article {
+            border-color: var(--vscode-descriptionForeground);
+        }
+
+        figure {
+            margin: 0;
+            padding-bottom: 70%;
+            position: relative;
+            text-align: center;
+            height: 1px;
+            width: 100%;
+        }
+
+        svg {
+            fill: var(--vscode-foreground);
+            color: var(--vscode-foreground);
+            width: 30px;
+            height: 30px;
+            display: block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        button {
+            border: none;
+            background: var(--vscode-button-background);
+            padding: 5px 10px;
+            display: block;
+            width: 100%;
+            color: var(--vscode-button-foreground);
+            outline: none !important;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:hover {
+            background: var(--vscode-button-hoverBackground);
+        }
+
+        input[type="search"] {
+            background: var(--vscode-input-background);
+            border-width: 1px;
+            border-style: solid;
+            border-color: var(--vscode-input-background);
+            color: var(--vscode-input-foreground);
+            font-size: var(--vscode-font-size);
+            display: block;
+            padding: 6px 6px;
+            flex: 1 0 auto;
+            outline: none;
+            margin: 10px 20px;
+        }
+
+        body.vscode-light input[type="search"] {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.vscode-high-contrast input[type="search"] {
+            border-color: var(--vscode-input-border);
+        }
+
+        input[type="search"]:focus {
+            border-color: var(--vscode-inputOption-activeBorder) !important;
+        }
+
+        input[type="search"]::placeholder {
+            color: var(--vscode-input-placeholderForeground);
+        }
+
+        .title {
+            position: relative;
+            height: 30px;
+        }
+
+        .title p {
+            position: absolute;
+            display: block;
+            text-align: center;
+            line-height: 0.8em;
+            word-wrap: break-word;
+            font-size: var(--vscode-font-size);
+            font-size: 0.9em;
+            right: 0;
+            left: 0;
+            height: inherit;
+            overflow: hidden;
+            margin: auto;
+            margin-top: -2px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <input type="search" placeholder="Search for icons">
+    </header>
+    <main>
+        {{items}}
+    </main>
+</body>
+
+</html>
+<script>
+    (function () {
+        const vscode = acquireVsCodeApi();
+        let searchInput = document.querySelector("input[type='search']");
+        let timeout = null;
+        textInput.onkeyup = function (e) {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                vscode.postMessage({
+                    command: 'updateSearch',
+                    terms: searchInput.value
+                });
+            }, 500);
+        };
+    });
+</script>

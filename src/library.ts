@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 import { FileProvider } from './fileProvider';
-import * as path from 'path';
+//import * as path from 'path';
 import { Icons } from './icons';
 
 const cats = {
@@ -25,39 +25,26 @@ export class Library {
                 retainContextWhenHidden: true,
             }
         );
+            
 
 
-
-        let iteration = 0;
-        const updateWebview = () => {
-            const cat = iteration++ % 2 ? 'Compiling Cat' : 'Coding Cat';
-            panel.title = cat;
-            panel.webview.html = this.getWebviewContent(cat);
-        };
-
-        updateWebview();
-        //const interval = setInterval(updateWebview, 10000);
-
+        panel.webview.html = this.getWebviewContent();
+        
         panel.webview.onDidReceiveMessage(
             message => {
                 switch (message.command) {
                     case 'updateSearch':
-                        vscode.window.showErrorMessage(message.text);
+                        panel.webview.postMessage({ command: 'updateSearch', items: Icons.getItems(message.terms)});
                         return;
                 }
             }
         );
-
-        panel.onDidDispose(function () {
-            //clearInterval(interval);
-        });
-
-
     }
 
-    public getWebviewContent(cat: keyof typeof cats) {
+    public getWebviewContent() {
         FileProvider.path = this._path;
-        return FileProvider.parseTemplate('index', { items: Icons.getItems() });
+        let baseuri = 'vscode-resource:/' + this._path + "/";
+        return FileProvider.parseTemplate('index', { items: Icons.getItems(""), baseUri: baseuri});
     }
 }
 

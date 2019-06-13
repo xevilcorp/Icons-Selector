@@ -5,13 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        header {
+        .header-wrapper {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             background-color: var(--vscode-breadcrumb-background);
             z-index: 99999;
+        }
+
+        header {
+            width: 100%;
             display: flex;
         }
 
@@ -161,7 +165,7 @@
             padding: 6px 6px;
             flex: 1 0 auto;
             outline: none;
-            margin: 10px 20px;
+            margin: 10px 20px 0px 20px;
         }
 
         body.vscode-light input[type="search"] {
@@ -200,13 +204,45 @@
             margin: auto;
             margin-top: -2px;
         }
+
+        @keyframes load {
+            0% {
+                background-size: 5% 100%;
+            }
+            99% {background-size: 100% 100%;}
+            100% {
+                background-size: 0% 100%;
+            }
+        }
+
+        #loading {
+            margin: 2px 20px 6px 20px;
+            display: block;
+            height: 3px;
+            background: linear-gradient(0deg, var(--vscode-button-background), var(--vscode-button-background));
+            background-size: 0% 100%;
+            background-position: 0px 0px;
+            background-repeat: no-repeat;
+            animation-name: nothingByDefault;
+            animation-iteration-count: 1;
+            animation-timing-function: ease-out;
+            animation-duration: 0.5s;
+            animation-fill-mode: both;
+
+        }
     </style>
 </head>
 
 <body>
-    <header>
-        <input type="search" placeholder="Search for icons">
-    </header>
+    <section class="header-wrapper">
+        <header>
+            <input id="search" type="search" placeholder="Search for icons">
+        </header>
+        <div id="loading"></div>
+    </section>
+
+
+    <!---<img class="loading" style="display: none" src="{{baseUri}}/img/loading-light.svg" alt="Loading">-->
     <main>
         {{items}}
     </main>
@@ -214,18 +250,28 @@
 
 </html>
 <script>
-    (function () {
-        const vscode = acquireVsCodeApi();
-        let searchInput = document.querySelector("input[type='search']");
-        let timeout = null;
-        textInput.onkeyup = function (e) {
-            clearTimeout(timeout);
-            timeout = setTimeout(function () {
-                vscode.postMessage({
-                    command: 'updateSearch',
-                    terms: searchInput.value
-                });
-            }, 500);
-        };
+    const vscode = acquireVsCodeApi();
+    let searchInput = document.querySelector('#search');
+    let timeout = null;
+    searchInput.addEventListener("keyup", function (e) {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            document.querySelector("#loading").style.animationName = "";
+            document.querySelector("#loading").style.animationName = "load";
+            document.querySelector("main").innerHTML = "";
+            vscode.postMessage({
+                command: 'updateSearch',
+                terms: searchInput.value
+            });
+        }, 500);
+    });
+    window.addEventListener('message', event => {
+        const message = event.data;
+        switch (message.command) {
+            case 'updateSearch':
+                document.querySelector("main").innerHTML = message.items;
+                break;
+        }
+
     });
 </script>

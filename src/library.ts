@@ -18,7 +18,7 @@ export class Library {
     public startCommand(): void {
         const panel = vscode.window.createWebviewPanel(
             'fonts-selector',
-            'Page Title',
+            'Icons',
             vscode.ViewColumn.Beside,
             {
                 enableScripts: true,
